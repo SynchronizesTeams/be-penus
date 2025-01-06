@@ -10,7 +10,8 @@ class Galeri extends Model
 
     protected $fillable = [
         'title',
-        'image'
+        'image',
+        'status',
     ];
 
 }

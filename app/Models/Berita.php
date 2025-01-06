@@ -14,5 +14,6 @@ class Berita extends Model
         'subtitle',
         'description',
         'tags',
+        'status',
     ];
 }

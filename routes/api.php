@@ -9,3 +9,4 @@ Route::get('v1/index', [MainController::class, 'index']);
 
 Route::post('v1/galeri', [MainController::class, 'createGaleri']);
 Route::post('v1/galeri/update/{id}', [MainController::class, 'updateGaleri']);
+Route::post('v1/galeri/delete/{id}', [MainController::class, 'deleteGaleri']);

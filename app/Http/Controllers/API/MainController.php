@@ -14,9 +14,9 @@ class MainController extends Controller
 {
     public function index()
     {
-        $galeri = Galeri::get();
-        $berita = Berita::get();
-        $sarana = Sarana::get();
+        $galeri = Galeri::where('status', '=', 1)->get();
+        $berita = Berita::where('status', '=', 1)->get();
+        $sarana = Sarana::where('status', '=', 1)->get();
 
         return response()->json([
             $data = [
@@ -28,6 +28,7 @@ class MainController extends Controller
         ]);
     }
 
+    // start function galeri
     public function createGaleri(Request $request)
     {
         $validateData = $request->validate([
@@ -55,34 +56,58 @@ class MainController extends Controller
     }
 
     public function updateGaleri(Request $request, $id)
-{
-    $request->validate([
-        'image' => 'nullable|image|mimes:png,jpeg,jpg,webp|max:2048', // Gambar bersifat opsional
-        'title' => 'required|string|max:255'
-    ]);
+    {
+        $request->validate([
+            'image' => 'nullable|image|mimes:png,jpeg,jpg,webp|max:2048',
+            'title' => 'required|string|max:255'
+        ]);
 
-    DB::transaction(function () use ($request, $id) {
-        $galeri = Galeri::where('id', '=', $id)->firstOrFail();
+        DB::transaction(function () use ($request, $id) {
+            $galeri = Galeri::where('id', '=', $id)->firstOrFail();
 
-        // Periksa apakah ada file gambar baru di request
-        if ($request->hasFile('image')) {
-            if ($galeri->image) {
-                Storage::disk('public')->delete($galeri->image);
+            if ($galeri->status == 0) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+            // Periksa apakah ada file gambar baru di request
+            if ($request->hasFile('image')) {
+                if ($galeri->image) {
+                    Storage::disk('public')->delete($galeri->image);
+                }
+
+                $imagePath = $request->file('image')->store('galeri', 'public');
+
+                $galeri->image = $imagePath;
             }
 
-            $imagePath = $request->file('image')->store('galeri', 'public');
+            $galeri->title = $request->title;
+            $galeri->save();
+        });
 
-            $galeri->image = $imagePath;
-        }
+        return response()->json([
+            'message' => 'Data berhasil diupdate'
+        ], 200);
+    }
 
-        $galeri->title = $request->title;
-        $galeri->save();
-    });
+    public function deleteGaleri(Request $request, $id)
+    {
+        DB::transaction(function () use ($id){
+            $galeri = Galeri::where('id', '=', $id)->firstOrFail();
+            
+            $galeri->status = 0;
+            $galeri->save();
+        });
 
-    return response()->json([
-        'message' => 'Data berhasil diupdate'
-    ], 200);
-}
+        return response()->json([
+            'message' => 'Data berhasil dihapus'
+        ]);
+    }
+    //end function galeri
 
-
+    //start function sarana
+    public function createSarana(Request $request)
+    {
+        
+    }
 }

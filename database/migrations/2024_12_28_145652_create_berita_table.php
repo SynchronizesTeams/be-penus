@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('description');
             $table->string('images');
             $table->string('tags');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
