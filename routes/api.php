@@ -20,8 +20,8 @@ Route::prefix('v1/sarana',)->group(function(){
 
 Route::prefix('v1/berita',)->group(function(){
     Route::post('/create', [MainController::class, 'createBerita']);
-    Route::post('/update/{id}', [MainController::class, 'updateSarana']);
-    Route::post('/delete/{id}', [MainController::class, 'deleteSarana']);
+    Route::post('/update/{id}', [MainController::class, 'updateBerita']);
+    Route::post('/delete/{id}', [MainController::class, 'deleteBerita']);
 });
 
     

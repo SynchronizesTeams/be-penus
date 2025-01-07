@@ -228,20 +228,35 @@ class MainController extends Controller
 
          DB::transaction(function () use ($request, $id) {
             $berita = Berita::where('id', '=', $id)->firstOrFail();
-
-            if ($request->hasFile('images')) {
-                if ($berita->images) {
-                    Storage::disk('public')->delete($berita->images);
-                }
-
-                $imagePath = $request->file('images')->store('berita', 'public');
-
-                $berita->image = $imagePath;
-            }
-            $berita->update($request->all());
+            $imagePath = $request->file('images')->store('berita', 'public');
+            $berita->images = $imagePath;
+            $berita->update($request->only('title', 'subtitle', 'description', 'tags'));
             $berita->save();
 
          });
+
+         return response()->json([
+            'message' => 'Data berhasil di update'
+         ]);
+    }
+
+    public function deleteBerita(Request $request, $id) {
+        DB::transaction(function () use ($id){
+            $berita = Berita::where('id', '=', $id)->firstOrFail();
+
+            if (!$berita) {
+                return response()->json([
+                    'message' => 'Berita tidak ditemukan'
+                ]);
+            }
+
+            $berita->status = 0;
+            $berita->save();
+        });
+
+        return response()->json([
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 
 }
