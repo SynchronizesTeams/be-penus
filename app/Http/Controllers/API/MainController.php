@@ -259,4 +259,9 @@ class MainController extends Controller
         ]);
     }
 
+
+    public function getTags(Request $request, $id)
+    {
+        
+    }
 }
