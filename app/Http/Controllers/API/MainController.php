@@ -107,7 +107,113 @@ class MainController extends Controller
 
     //start function sarana
     public function createSarana(Request $request)
-    {
-        
+    {   
+        $validateData = $request->validate([
+            'image' => 'required|array',
+            'image.*' => 'required|image|mimes:png,jpeg,jpg,webp',
+            'title' => 'required|array',
+            'title.*' => 'required|string'
+        ]);
+
+        $sarana = null;
+
+        DB::transaction(function () use ($validateData, &$sarana) {
+            foreach($validateData['image'] as $key => $image){
+                $imagePath = $image->store('sarana', 'public');
+                $sarana = Sarana::create([
+                    'image' => $imagePath,
+                    'title' => $validateData['title'][$key],
+                ]);
+            }
+        });
+
+        return response()->json([
+            'message' => 'Gambar berhasil ditambahkan'
+        ], 201);
     }
+
+    public function updateSarana(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'nullable|image|mimes:png,jpeg,jpg,webp|max:2048',
+            'title' => 'required|string|max:255'
+        ]);
+
+        DB::transaction(function () use ($request, $id) {
+            $sarana = Sarana::where('id', '=', $id)->firstOrFail();
+
+            if ($sarana->status == 0) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+            // Periksa apakah ada file gambar baru di request
+            if ($request->hasFile('image')) {
+                if ($sarana->image) {
+                    Storage::disk('public')->delete($sarana->image);
+                }
+
+                $imagePath = $request->file('image')->store('sarana', 'public');
+
+             $sarana->image = $imagePath;
+            }
+
+            $sarana->title = $request->title;
+            $sarana->save();
+        });
+
+        return response()->json([
+            'message' => 'Data berhasil diupdate'
+        ], 200);
+    }
+
+    public function deleteSarana(Request $request, $id)
+    {
+        DB::transaction(function () use ($id){
+            $sarana = Sarana::where('id', '=', $id)->firstOrFail();
+            
+            $sarana->status = 0;
+            $sarana->save();
+        });
+
+        return response()->json([
+            'message' => 'Data berhasil dihapus'
+        ]);
+    }
+
+    //end function sarana
+
+    //start function berita
+    public function createBerita(Request $request)
+    {
+        $request->validate([
+            'images' => 'required|image|mimes:jpg,png,jpeg,webp',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tags' => 'required|array',
+            'tags.*' => 'required|string|max:255',
+        ]);
+
+        $berita = null;
+
+        DB::transaction(function () use ($request, &$berita) {
+            $imagePath = $request->file('images')->store('berita', 'public');
+
+            // Create berita with tags stored as JSON
+            $berita = Berita::create([
+                'images' => $imagePath,
+                'title' => $request->title,
+                'subtitle' => $request->subtitle,
+                'description' => $request->description,
+                'tags' => $request->tags, 
+            ]);
+        });
+
+        return response()->json([
+            'message' => 'Berita berhasil ditambahkan',
+        ], 201);
+    }
+
+
 }

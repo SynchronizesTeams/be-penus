@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('subtitle');
             $table->longText('description');
             $table->string('images');
-            $table->string('tags');
+            $table->json('tags')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });

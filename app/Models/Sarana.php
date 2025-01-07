@@ -11,6 +11,6 @@ class Sarana extends Model
     protected $fillable = [
         'title',
         'image',
-        'status',
+        'status'
     ];
 }

@@ -9,11 +9,15 @@ class Berita extends Model
     protected $table = 'berita';
 
     protected $fillable = [
-        'image',
+        'images',
         'title',
         'subtitle',
         'description',
         'tags',
         'status',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
     ];
 }
