@@ -24,4 +24,7 @@ Route::prefix('v1/berita',)->group(function(){
     Route::post('/delete/{id}', [MainController::class, 'deleteBerita']);
 });
 
+Route::prefix('v1/misc')->group(function() {
+    Route::get('tag', [MainController::class, 'getTags']);
+});
     

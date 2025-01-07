@@ -87,7 +87,7 @@ class MainController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil diupdate'
-        ], 200);
+        ], 201);
     }
 
     public function deleteGaleri(Request $request, $id)
@@ -101,7 +101,7 @@ class MainController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil dihapus'
-        ]);
+        ], 201);
     }
     //end function galeri
 
@@ -164,7 +164,7 @@ class MainController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil diupdate'
-        ], 200);
+        ], 201);
     }
 
     public function deleteSarana(Request $request, $id)
@@ -178,7 +178,7 @@ class MainController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil dihapus'
-        ]);
+        ], 201);
     }
 
     //end function sarana
@@ -237,7 +237,7 @@ class MainController extends Controller
 
          return response()->json([
             'message' => 'Data berhasil di update'
-         ]);
+         ], 201);
     }
 
     public function deleteBerita(Request $request, $id) {
@@ -256,12 +256,32 @@ class MainController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil dihapus'
-        ]);
+        ], 201);
     }
 
 
-    public function getTags(Request $request, $id)
+    public function getTags(Request $request)
     {
-        
+        $tag = $request->query('tag');
+
+        if (!$tag) {
+            return response()->json(['message' => 'Tag harus diisi']);
+        }
+
+        $berita = Berita::whereRaw('JSON_CONTAINS(tags, ?)', [json_encode($tag)])
+        ->get();
+
+        if (!$berita) {
+            return response()->json([
+                'message' => 'Berita tidak ditemukan'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Berita ditemukan',
+            'data' => $berita,
+        ], 200);
     }
+
+    
 }
