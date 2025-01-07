@@ -94,7 +94,7 @@ class MainController extends Controller
     {
         DB::transaction(function () use ($id){
             $galeri = Galeri::where('id', '=', $id)->firstOrFail();
-            
+
             $galeri->status = 0;
             $galeri->save();
         });
@@ -107,7 +107,7 @@ class MainController extends Controller
 
     //start function sarana
     public function createSarana(Request $request)
-    {   
+    {
         $validateData = $request->validate([
             'image' => 'required|array',
             'image.*' => 'required|image|mimes:png,jpeg,jpg,webp',
@@ -171,7 +171,7 @@ class MainController extends Controller
     {
         DB::transaction(function () use ($id){
             $sarana = Sarana::where('id', '=', $id)->firstOrFail();
-            
+
             $sarana->status = 0;
             $sarana->save();
         });
@@ -206,7 +206,7 @@ class MainController extends Controller
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
                 'description' => $request->description,
-                'tags' => $request->tags, 
+                'tags' => $request->tags,
             ]);
         });
 
@@ -215,5 +215,33 @@ class MainController extends Controller
         ], 201);
     }
 
+    public function updateBerita(Request $request, $id)
+    {
+         $request->validate([
+            'images' => 'required|image|mimes:jpg,png,jpeg,webp',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tags' => 'require d|array',
+            'tags.*' => 'required|string|max:255',
+        ]);
+
+         DB::transaction(function () use ($request, $id) {
+            $berita = Berita::where('id', '=', $id)->firstOrFail();
+
+            if ($request->hasFile('images')) {
+                if ($berita->images) {
+                    Storage::disk('public')->delete($berita->images);
+                }
+
+                $imagePath = $request->file('images')->store('berita', 'public');
+
+                $berita->image = $imagePath;
+            }
+            $berita->update($request->all());
+            $berita->save();
+
+         });
+    }
 
 }
