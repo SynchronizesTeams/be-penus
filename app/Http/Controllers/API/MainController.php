@@ -282,6 +282,4 @@ class MainController extends Controller
             'data' => $berita,
         ], 200);
     }
-
-    
 }
