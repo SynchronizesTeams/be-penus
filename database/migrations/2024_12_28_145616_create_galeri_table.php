@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('galeri', function (Blueprint $table) {
             $table->id();
+            $table->string('galeri_id')->unique();
             $table->string('image');
             $table->string('title');
             $table->integer('status')->default(1);

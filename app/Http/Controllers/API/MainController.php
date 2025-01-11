@@ -28,7 +28,7 @@ class MainController extends Controller
         ]);
     }
 
-    // start function galeri
+
     public function createGaleri(Request $request)
     {
         $validateData = $request->validate([
@@ -54,6 +54,8 @@ class MainController extends Controller
             'message' => 'Gambar berhasil ditambahkan'
         ], 201);
     }
+
+
 
     public function updateGaleri(Request $request, $id)
     {
