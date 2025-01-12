@@ -15,7 +15,6 @@ class AuthController extends BaseController
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
@@ -24,9 +23,14 @@ class AuthController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        // $input = $request->all();
+        $input['password'] = bcrypt($request['password']);
+        $user = User::create([
+            'name' => $request->name,
+            'password' => $request->password,
+            'c_password' => $request->c_password,
+            'user_id' => 'user'. '-' . uniqid(),
+        ]);
         $success['token'] =  $user->createToken('penus-webapp')->plainTextToken;
         $success['name'] =  $user->name;
 
@@ -35,7 +39,7 @@ class AuthController extends BaseController
 
     public function login(Request $request): JsonResponse
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::attempt(['name' => $request->name, 'password' => $request->password])){
             $user = Auth::user();
             $success['token'] =  $user->createToken('penus-webapp')->plainTextToken;
             $success['name'] =  $user->name;

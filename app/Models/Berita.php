@@ -9,6 +9,7 @@ class Berita extends Model
     protected $table = 'berita';
 
     protected $fillable = [
+        'berita_id',
         'images',
         'title',
         'subtitle',

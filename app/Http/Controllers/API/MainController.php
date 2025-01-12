@@ -42,10 +42,12 @@ class MainController extends Controller
 
         DB::transaction(function () use ($validateData, &$galeri) {
             foreach($validateData['image'] as $key => $image){
+                $galeri_id = 'galeri' . '-' . uniqid();
                 $imagePath = $image->store('galeri', 'public');
                 $galeri = Galeri::create([
                     'image' => $imagePath,
                     'title' => $validateData['title'][$key],
+                    'galeri_id' => $galeri_id
                 ]);
             }
         });
@@ -82,7 +84,7 @@ class MainController extends Controller
 
                 $galeri->image = $imagePath;
             }
-
+            
             $galeri->title = $request->title;
             $galeri->save();
         });
@@ -121,10 +123,12 @@ class MainController extends Controller
 
         DB::transaction(function () use ($validateData, &$sarana) {
             foreach($validateData['image'] as $key => $image){
+                $sarana_id = 'sarana' . '-' . uniqid();
                 $imagePath = $image->store('sarana', 'public');
                 $sarana = Sarana::create([
                     'image' => $imagePath,
                     'title' => $validateData['title'][$key],
+                    'sarana_id' => $sarana_id
                 ]);
             }
         });
@@ -202,8 +206,10 @@ class MainController extends Controller
         DB::transaction(function () use ($request, &$berita) {
             $imagePath = $request->file('images')->store('berita', 'public');
 
+            $berita_id = 'berita' . '-' . uniqid();
             // Create berita with tags stored as JSON
             $berita = Berita::create([
+                'berita_id' => $berita_id,
                 'images' => $imagePath,
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
@@ -259,6 +265,22 @@ class MainController extends Controller
         return response()->json([
             'message' => 'Data berhasil dihapus'
         ], 201);
+    }
+
+    public function showBerita(Request $request, $berita_id)
+    {
+        $berita  = Berita::where('berita_id', '=', $berita_id)->firstOrFail();
+
+        if (!$berita) {
+            return response()->json([
+                'message' => 'Berita tidak ditemukan'
+            ], 404);
+        } else {
+            return response()->json([
+                'message' => 'Berita ditemukan',
+                'data' => $berita
+            ], 200);
+        }
     }
 
 

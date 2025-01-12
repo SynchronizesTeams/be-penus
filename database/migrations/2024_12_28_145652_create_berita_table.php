@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('berita', function (Blueprint $table) {
             $table->id();
+            $table->string('berita_id')->unique();
+            $table->string('author_id');
             $table->string('title');
             $table->string('subtitle');
             $table->longText('description');

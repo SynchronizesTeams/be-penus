@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sarana', function (Blueprint $table) {
             $table->id();
+            $table->string('sarana_id')->unique();
             $table->string('title');
             $table->string('image');
             $table->integer('status')->default(1);

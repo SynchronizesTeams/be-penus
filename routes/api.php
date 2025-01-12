@@ -12,28 +12,32 @@ Route::controller(AuthController::class)->group(function(){
 });
 
 Route::middleware('auth:sanctum')->group(function()  {
-    Route::prefix('v1/galeri')->group(function (){
-        Route::post('/create', [MainController::class, 'createGaleri']);
-        Route::post('/update/{id}', [MainController::class, 'updateGaleri']);
-        Route::post('/delete/{id}', [MainController::class, 'deleteGaleri']);    
-    });
-    
-    Route::prefix('v1/sarana',)->group(function(){
-        Route::post('/create', [MainController::class, 'createSarana']);
-        Route::post('/update/{id}', [MainController::class, 'updateSarana']);
-        Route::post('/delete/{id}', [MainController::class, 'deleteSarana']);
-    });
-    
-    Route::prefix('v1/berita',)->group(function(){
-        Route::post('/create', [MainController::class, 'createBerita']);
-        Route::post('/update/{id}', [MainController::class, 'updateBerita']);
-        Route::post('/delete/{id}', [MainController::class, 'deleteBerita']);
-    });
+   
 });
 
-Route::get('v1/index', [MainController::class, 'index']);
+Route::prefix('v1/galeri')->group(function (){
+    Route::post('/create', [MainController::class, 'createGaleri']);
+    Route::post('/update/{galeri_id}', [MainController::class, 'updateGaleri']);
+    Route::post('/delete/{galeri_id}', [MainController::class, 'deleteGaleri']);    
+});
+
+Route::prefix('v1/sarana',)->group(function(){
+    Route::post('/create', [MainController::class, 'createSarana']);
+    Route::post('/update/{sarana_id}', [MainController::class, 'updateSarana']);
+    Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
+});
+
+Route::prefix('v1/berita',)->group(function(){
+    Route::post('/create', [MainController::class, 'createBerita']);
+    Route::post('/update/{berita_id}', [MainController::class, 'updateBerita']);
+    Route::post('/delete/{berita_id}', [MainController::class, 'deleteBerita']);
+    Route::get('/show/{berita_id}', [MainController::class, 'showBerita']);
+});
+
+
 
 Route::prefix('v1/misc')->group(function() {
+    Route::get('index', [MainController::class, 'index']);
     Route::get('tag', [MainController::class, 'getTags']);
 });
 
