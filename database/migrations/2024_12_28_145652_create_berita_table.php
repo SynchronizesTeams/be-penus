@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('berita', function (Blueprint $table) {
             $table->id();
             $table->string('berita_id')->unique();
-            $table->string('author_id');
+            $table->string('author');
             $table->string('title');
             $table->string('subtitle');
             $table->longText('description');
@@ -22,6 +22,11 @@ return new class extends Migration
             $table->json('tags')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
+
+            //FK
+
+            $table->index('author');
+            $table->foreign('author')->references('name')->on('users');
         });
     }
 

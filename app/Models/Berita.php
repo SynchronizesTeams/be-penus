@@ -10,6 +10,7 @@ class Berita extends Model
 
     protected $fillable = [
         'berita_id',
+        'author',
         'images',
         'title',
         'subtitle',
@@ -17,6 +18,11 @@ class Berita extends Model
         'tags',
         'status',
     ];
+
+    public function Author()
+    {
+        return $this->belongsTo(User::class, 'author_id', 'user_id');
+    }
 
     protected $casts = [
         'tags' => 'array',

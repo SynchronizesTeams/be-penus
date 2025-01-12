@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Galeri;
 use App\Models\Sarana;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -192,6 +194,7 @@ class MainController extends Controller
     //start function berita
     public function createBerita(Request $request)
     {
+        $user = Auth::user();
         $request->validate([
             'images' => 'required|image|mimes:jpg,png,jpeg,webp',
             'title' => 'required|string|max:255',
@@ -203,13 +206,14 @@ class MainController extends Controller
 
         $berita = null;
 
-        DB::transaction(function () use ($request, &$berita) {
+        DB::transaction(function () use ($request, $user, &$berita) {
             $imagePath = $request->file('images')->store('berita', 'public');
 
             $berita_id = 'berita' . '-' . uniqid();
             // Create berita with tags stored as JSON
             $berita = Berita::create([
                 'berita_id' => $berita_id,
+                'author' => $user->name,
                 'images' => $imagePath,
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,

@@ -12,7 +12,12 @@ Route::controller(AuthController::class)->group(function(){
 });
 
 Route::middleware('auth:sanctum')->group(function()  {
-   
+    Route::prefix('v1/berita',)->group(function(){
+        Route::post('/create', [MainController::class, 'createBerita']);
+        Route::post('/update/{berita_id}', [MainController::class, 'updateBerita']);
+        Route::post('/delete/{berita_id}', [MainController::class, 'deleteBerita']);
+        Route::get('/show/{berita_id}', [MainController::class, 'showBerita']);
+    });
 });
 
 Route::prefix('v1/galeri')->group(function (){
@@ -27,12 +32,7 @@ Route::prefix('v1/sarana',)->group(function(){
     Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
 });
 
-Route::prefix('v1/berita',)->group(function(){
-    Route::post('/create', [MainController::class, 'createBerita']);
-    Route::post('/update/{berita_id}', [MainController::class, 'updateBerita']);
-    Route::post('/delete/{berita_id}', [MainController::class, 'deleteBerita']);
-    Route::get('/show/{berita_id}', [MainController::class, 'showBerita']);
-});
+
 
 
 
