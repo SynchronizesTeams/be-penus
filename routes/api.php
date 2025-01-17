@@ -17,20 +17,25 @@ Route::middleware('auth:sanctum')->group(function()  {
         Route::post('/update/{berita_id}', [MainController::class, 'updateBerita']);
         Route::post('/delete/{berita_id}', [MainController::class, 'deleteBerita']);
         Route::get('/show/{berita_id}', [MainController::class, 'showBerita']);
+        Route::get('/show', [MainController::class, 'showBeritaAll']);
     });
+
+    Route::prefix('v1/galeri')->group(function (){
+        Route::post('/create', [MainController::class, 'createGaleri']);
+        Route::post('/update/{galeri_id}', [MainController::class, 'updateGaleri']);
+        Route::post('/delete/{galeri_id}', [MainController::class, 'deleteGaleri']);    
+        Route::get('/show', [MainController::class, 'showGaleri']);    
+    });
+    
+    Route::prefix('v1/sarana',)->group(function(){
+        Route::post('/create', [MainController::class, 'createSarana']);
+        Route::post('/update/{sarana_id}', [MainController::class, 'updateSarana']);
+        Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
+        Route::get('/show', [MainController::class, 'showSarana']);
+    });
+    
 });
 
-Route::prefix('v1/galeri')->group(function (){
-    Route::post('/create', [MainController::class, 'createGaleri']);
-    Route::post('/update/{galeri_id}', [MainController::class, 'updateGaleri']);
-    Route::post('/delete/{galeri_id}', [MainController::class, 'deleteGaleri']);    
-});
-
-Route::prefix('v1/sarana',)->group(function(){
-    Route::post('/create', [MainController::class, 'createSarana']);
-    Route::post('/update/{sarana_id}', [MainController::class, 'updateSarana']);
-    Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
-});
 
 
 
