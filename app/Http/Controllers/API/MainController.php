@@ -22,7 +22,7 @@ class MainController extends Controller
         return response()->json([
             'success' => true,
             'name' => $user->name
-        ], 201);
+        ], 200);
     }
 
     public function index()
