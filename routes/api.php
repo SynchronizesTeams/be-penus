@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function(){
     Route::post('register', 'register')->name('register');
     Route::post('login', 'login')->name('login');
+    
 });
 
 Route::middleware('auth:sanctum')->group(function()  {
@@ -33,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function()  {
         Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
         Route::get('/show', [MainController::class, 'showSarana']);
     });
+
+    Route::get('user', [MainController::class, 'user']);
     
 });
 
@@ -42,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function()  {
 
 
 Route::prefix('v1/misc')->group(function() {
+    
     Route::get('index', [MainController::class, 'index']);
     Route::get('tag', [MainController::class, 'getTags']);
 });

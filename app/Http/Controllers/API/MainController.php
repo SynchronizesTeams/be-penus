@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
+    public function user(Request $request) 
+    {   
+        $user = Auth::user();
+        return response()->json([
+            'success' => true,
+            'name' => $user->name
+        ], 201);
+    }
+
     public function index()
     {
         $galeri = Galeri::where('status', '=', 1)->get();
