@@ -337,7 +337,7 @@ class MainController extends Controller
 
     public function showBeritaAll()
     {
-        $berita  = Berita::get();
+        $berita  = Berita::where('status', '=', 1)->get();
 
         if (!$berita) {
             return response()->json([
