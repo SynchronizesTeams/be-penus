@@ -139,6 +139,22 @@ class MainController extends Controller
             'data' => $galeri
         ]);
     }
+
+    public function showGaleriById(Request $request, $galeri_id)
+    {
+        $galeri  = Galeri::where('galeri_id', '=', $galeri_id)->where('status', '=', 1)->firstOrFail();
+
+        if (!$galeri) {
+            return response()->json([
+                'message' => 'sarana tidak ditemukan'
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => 'saarnaa ditemukan',
+                'data' => $galeri
+            ], 200);
+        }
+    }
     //end function galeri
 
     //start function sarana
@@ -234,6 +250,21 @@ class MainController extends Controller
         ]);
     }
 
+    public function showSaranaById(Request $request, $sarana_id)
+    {
+        $sarana  = Sarana::where('sarana_id', '=', $sarana_id)->where('status', '=', 1)->firstOrFail();
+
+        if (!$sarana) {
+            return response()->json([
+                'message' => 'sarana tidak ditemukan'
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => 'saarnaa ditemukan',
+                'data' => $sarana
+            ], 200);
+        }
+    }
     //end function sarana
 
     //start function berita
