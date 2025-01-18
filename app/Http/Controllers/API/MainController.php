@@ -321,7 +321,7 @@ class MainController extends Controller
 
     public function showBerita(Request $request, $berita_id)
     {
-        $berita  = Berita::where('berita_id', '=', $berita_id)->firstOrFail();
+        $berita  = Berita::where('berita_id', '=', $berita_id)->where('status', '=', 1)->firstOrFail();
 
         if (!$berita) {
             return response()->json([
