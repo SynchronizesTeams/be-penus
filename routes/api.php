@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function()  {
         Route::post('/update/{galeri_id}', [MainController::class, 'updateGaleri']);
         Route::post('/delete/{galeri_id}', [MainController::class, 'deleteGaleri']);    
         Route::get('/show', [MainController::class, 'showGaleri']);    
+        Route::get('/show/{galeri_id}', [MainController::class, 'showGaleriById']);    
     });
     
     Route::prefix('v1/sarana',)->group(function(){
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function()  {
         Route::post('/update/{sarana_id}', [MainController::class, 'updateSarana']);
         Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
         Route::get('/show', [MainController::class, 'showSarana']);
+        Route::get('/show/{sarana_id}', [MainController::class, 'showSaranaById']);
     });
 
     Route::get('user', [MainController::class, 'user']);
