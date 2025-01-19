@@ -307,7 +307,7 @@ class MainController extends Controller
     public function updateBerita(Request $request, $berita_id)
     {
          $request->validate([
-            'images' => 'required|image|mimes:jpg,png,jpeg,webp',
+            'images' => 'nullable|image|mimes:jpg,png,jpeg,webp',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
