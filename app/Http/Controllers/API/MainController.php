@@ -28,7 +28,7 @@ class MainController extends Controller
     public function index()
     {
         $galeri = Galeri::where('status', '=', 1)->get();
-        $berita = Berita::where('status', '=', 1)->get();
+        $berita = Berita::where('status', '=', 1)->orderBy('created_at', 'desc')->take(4)->get();
         $sarana = Sarana::where('status', '=', 1)->get();
 
         return response()->json([

@@ -42,12 +42,7 @@ Route::middleware('auth:sanctum')->group(function()  {
 });
 
 
-
-
-
-
 Route::prefix('v1/misc')->group(function() {
-    
     Route::get('index', [MainController::class, 'index']);
     Route::get('tag', [MainController::class, 'getTags']);
 });
