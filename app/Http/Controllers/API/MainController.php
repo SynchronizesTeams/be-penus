@@ -306,7 +306,7 @@ class MainController extends Controller
 
     public function updateBerita(Request $request, $berita_id)
     {
-         $request->validate([
+        $request->validate([
             'images' => 'nullable|image|mimes:jpg,png,jpeg,webp',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
@@ -314,22 +314,31 @@ class MainController extends Controller
             'tags' => 'required|array',
             'tags.*' => 'required|string|max:255',
         ]);
+
         $berita = null;
-         DB::transaction(function () use ($request, $berita_id, &$berita) {
+
+        DB::transaction(function () use ($request, $berita_id, &$berita) {
             $berita = Berita::where('berita_id', '=', $berita_id)->firstOrFail();
-            $imagePath = $request->file('images')->store('berita', 'public');
-            $berita->images = $imagePath;
+
+            if ($request->hasFile('images')) {
+                if ($berita->images) {
+                    Storage::disk('public')->delete($berita->images);
+                }
+
+                $imagePath = $request->file('images')->store('berita', 'public');
+                $berita->images = $imagePath;
+            }
+
             $berita->update($request->only('title', 'subtitle', 'description', 'tags'));
-            $berita->save();
+        });
 
-         });
-
-         return response()->json([
+        return response()->json([
             'success' => true,
-            'message' => 'Data berhasil di update',
-            'data' => $berita
-         ], 201);
+            'message' => 'Data berhasil diupdate',
+            'data' => $berita,
+        ], 201);
     }
+
 
     public function deleteBerita(Request $request, $berita_id) {
         DB::transaction(function () use ($berita_id){
