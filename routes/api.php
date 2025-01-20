@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function()  {
 
 
 Route::prefix('v1/misc')->group(function() {
+    Route::get('berita', [MainController::class, 'showBeritaAll']);
+    Route::get('galeri', [MainController::class, 'showGaleri']);
     Route::get('index', [MainController::class, 'index']);
     Route::get('tag', [MainController::class, 'getTags']);
 });
