@@ -132,11 +132,16 @@ class MainController extends Controller
 
     public function showGaleri(Request $request)
     {
-        $galeri = Galeri::get()->where('status', '=', 1);
+        $galeri = Galeri::where('status', 1)->get();
 
+        $modifiedGaleri = $galeri->values()->map(function ($item, $index) {
+            $item->grid = $index % 2;
+            return $item;
+        });
+    
         return response()->json([
             'success' => true,
-            'data' => $galeri
+            'data' => $modifiedGaleri
         ]);
     }
 
