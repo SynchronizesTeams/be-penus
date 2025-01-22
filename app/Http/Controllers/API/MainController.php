@@ -414,4 +414,14 @@ class MainController extends Controller
             'data' => $berita,
         ], 200);
     }
+
+    public function recommendedBerita()
+    {
+        $berita = Berita::inRandomOrder()->take(4)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $berita
+        ]);
+    }
 }
