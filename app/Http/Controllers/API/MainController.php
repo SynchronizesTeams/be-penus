@@ -422,7 +422,7 @@ class MainController extends Controller
 
     public function recommendedBerita()
     {
-        $berita = Berita::inRandomOrder()->take(4)->get();
+        $berita = Berita::inRandomOrder()->select('berita_id', 'title')->take(4)->get();
 
         return response()->json([
             'success' => true,
