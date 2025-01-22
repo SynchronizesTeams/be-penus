@@ -367,6 +367,7 @@ class MainController extends Controller
     public function showBerita(Request $request, $berita_id)
     {
         $berita  = Berita::where('berita_id', '=', $berita_id)->where('status', '=', 1)->firstOrFail();
+        $rekomendasi_berita = Berita::inRandomOrder()->select('berita_id', 'title', 'images')->take(4)->get();
 
         if (!$berita) {
             return response()->json([
@@ -375,7 +376,8 @@ class MainController extends Controller
         } else {
             return response()->json([
                 'message' => 'Berita ditemukan',
-                'data' => $berita
+                'data' => $berita,
+                'recommended' => $rekomendasi_berita
             ], 200);
         }
     }
