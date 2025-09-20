@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function()  {
         Route::post('/create', [MainController::class, 'createSarana']);
         Route::post('/update/{sarana_id}', [MainController::class, 'updateSarana']);
         Route::post('/delete/{sarana_id}', [MainController::class, 'deleteSarana']);
+        Route::get('/show', [MainController::class, 'showSarana']);
         Route::get('/show/{sarana_id}', [MainController::class, 'showSaranaById']);
     });
 
